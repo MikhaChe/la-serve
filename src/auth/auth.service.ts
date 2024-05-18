@@ -17,20 +17,23 @@ export class AuthService {
   }
 
   async registration(userDto: CreateUserDto) {
-    const candidate = await this.userService.getUserByName(userDto.username);
-    if(candidate) {
-      throw new HttpException('User have the same name already exists', HttpStatus.BAD_REQUEST);
+    if(!userDto.password) {
+      throw new HttpException('User don\'t have any password', HttpStatus.BAD_REQUEST);
     }
     const hashPassword = await bcrypt.hash(userDto.password, 5);
+    
     const user = await this.userService.createUser({...userDto, password: hashPassword});
+
     return this.generateToken(user);
   }
 
   private async validateUser(userDto: CreateUserDto) {
+
+    const user = await this.userService.findUserByTlgID(userDto.userID);
+    const validPassword = await this.userService.getUserPasswordByTlgID(userDto.userID);
     let pswEquals;
-    const user = await this.userService.getUserByName(userDto.username);
-    if (user) {
-      pswEquals = await bcrypt.compare(userDto.password, user.password);
+    if (user && validPassword) {
+      pswEquals = await bcrypt.compare(userDto.password, validPassword);
     } else {
       pswEquals = false;
     }
@@ -42,7 +45,7 @@ export class AuthService {
   }
 
   private async generateToken(user: User) {
-    const payload = {username: user.username, id: user.id, roles: user.roles};
+    const payload = {userID: user.userID, id: user.id, roles: user.roles};
     return {
       token: this.jwtService.sign(payload),
     }

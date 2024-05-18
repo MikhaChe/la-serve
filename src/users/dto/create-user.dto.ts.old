@@ -1,0 +1,35 @@
+import { ApiProperty } from "@nestjs/swagger";
+
+export class CreateUserDto {
+  @ApiProperty({example: '1009576118', description: 'Unique Telegram UserID. AllowNull: false'})
+  readonly userID: string;
+
+  @ApiProperty({example: '@vasya', description: 'Username in Telegram'})
+  readonly username: string;
+  
+  @ApiProperty({example: 'Vasiliy', description: 'Name of person'})
+  readonly name: string;
+
+  @ApiProperty({example: 'Petrov', description: 'Surname of person'})
+  readonly surname:  string;
+
+  @ApiProperty({example: 10, description: 'Accumulated user karma. Type: INTEGER'})
+  readonly karma:  number;
+
+  @ApiProperty({example: 'email@email.net', description: 'User email'})
+  readonly email: string;
+
+  @ApiProperty({example: 'Qwerty*567_', description: 'User password'})
+  readonly password:  string;
+
+  @ApiProperty({example: '1002006827831', description: 'Unique Telegram ChatID. AllowNull: false'})
+  readonly chatID: string;
+
+  @ApiProperty({example: 4, description: '1 - MEMBER, >10 - RESTRICTED, 3 - KICKED, 4 - LEFT'})
+  readonly status: number;
+
+  @ApiProperty({example: '1009576118', description: 'Unique Telegram UserID. Author of changes in Telegram chat user status'})
+  readonly authorID: string;
+}
+
+

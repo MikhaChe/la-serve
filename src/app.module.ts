@@ -5,9 +5,16 @@ import { UsersModule } from './users/users.module';
 import { User } from './users/users.model';
 import { RolesModule } from './roles/roles.module';
 import { UserRoles } from './roles/user-roles.model';
-// import { AuthModule } from './auth/auth.module';
+import { AuthModule } from './auth/auth.module';
 import { PaymentsModule } from './payments/payments.module';
 import { Role } from './roles/roles.model';
+import { UserExt } from './users/user.ext.model';
+import { ChatsModule } from './chats/chats.module';
+import { Chat } from './chats/chats.model';
+import { UserChats } from './chats/user-chats.model';
+import { StatesModule } from './states/states.module';
+import { State } from './states/states.model';
+import { UserTlgExt } from './users/user.tlg-ext.model';
 
 @Module({
   imports: [
@@ -21,13 +28,15 @@ import { Role } from './roles/roles.model';
       username: process.env.DB_USER,
       password: process.env.DB_PSW,
       database: process.env.DB_NAME,
-      models: [User, Role, UserRoles],
+      models: [User, UserExt, UserTlgExt, Role, UserRoles, Chat, UserChats, State],
       autoLoadModels: true,
     }),
     UsersModule,
     RolesModule,
-    // AuthModule,
+    AuthModule,
     PaymentsModule,
+    ChatsModule,
+    StatesModule,
   ],
   controllers: [],
   providers: [],

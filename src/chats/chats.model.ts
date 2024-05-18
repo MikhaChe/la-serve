@@ -1,27 +1,31 @@
 //import { ApiProperty } from "@nestjs/swagger";
-import { BelongsToMany, Column, DataType, Model, Table } from "sequelize-typescript";
+import { BelongsToMany, Column, DataType, HasMany, Model, Table } from "sequelize-typescript";
 import { User } from "../users/users.model";
-import { UserRoles } from "./user-roles.model";
+import { UserChats } from "./user-chats.model";
+import { State } from "../states/states.model";
 
-interface RolesCreationAttrs {
-  value: string;
+interface ChatsCreationAttrs {
+  chatID: string;
   description: string;
 }
 
-@Table({tableName: 'roles', createdAt: false, updatedAt: false})
-export class Role extends Model<Role, RolesCreationAttrs> {
+@Table({tableName: 'chats', createdAt: 'timestamp', updatedAt: false})
+export class Chat extends Model<Chat, ChatsCreationAttrs> {
   //@ApiProperty({example: '1', description: 'Unique ID'})
   @Column({type: DataType.INTEGER, unique: true, autoIncrement: true, primaryKey: true})
   id: number;
 
   //@ApiProperty({example: 'ADMIN', description: 'User role value'})
   @Column({type: DataType.STRING, unique: true, allowNull: false})
-  value: string;
+  chatID: string;
 
   //@ApiProperty({example: 'Administrator', description: 'Role descrition'})
   @Column({type: DataType.STRING, allowNull: true})
   description: string;
 
-  @BelongsToMany(() =>User, () => UserRoles)
+  @BelongsToMany(() => State, () => UserChats)
+  states: State[];
+
+  @BelongsToMany(() =>User, () => UserChats)
   users: User[];
 }
